@@ -15,7 +15,8 @@ num = 4         # number of wheels
 c1 = 170         # cohesive strength of soil (N/m^2)
 c2 = 0.017       # cohesive strength of soil (N/cm^2)
 cf = 0.05        # friction co.efficient
-rho = 2470       # soil density (N/m^3)
+rho1 = 1600       # soil density (kg/m^3)
+rho2 = 2470       # soil density (N/m^3)
 g_moon = 1.625  # gravitational acc on moon (m/s^2) 
 
 
@@ -31,11 +32,19 @@ w_wh = w / num       # weight on each wheel
 # Helper Functions
 # =====================================================================
 
+def compression_resitance():
+    return()
+
+def bulldozing_resitance():
+    return()
+
+
 # =====================================================================
 # Terzaghi Analysis of Soil Deformation
 # =====================================================================
 
-
+def terzaghi():
+    return()
 
 
 # =====================================================================
