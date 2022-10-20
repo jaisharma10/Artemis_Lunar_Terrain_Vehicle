@@ -29,7 +29,7 @@ theta = 15      # slope angle for gravitational resistance (deg)
 n = 1           # constant 1
 
 # Additional Variables
-W = g_moon * m       # weight of vehivle on moon
+W = g_moon * m       # weight of vehicle on moon
 W_wh = W / num       # weight on each wheel
 
 # Grousers
