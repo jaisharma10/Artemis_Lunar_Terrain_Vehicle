@@ -32,6 +32,16 @@ n = 1           # constant 1
 W = g_moon * m       # weight of vehivle on moon
 W_wh = W / num       # weight on each wheel
 
+# Grousers
+num_gr = 16          # number of grousers
+r = D/2              # radius of grouser
+h = 0.05             # height of grouser (m)
+
+# more constants
+# s = 0.035      # wheel slip ratio 
+s = 0.5
+K = 0.018      # shear deformation modulus (m)
+
 
 # =====================================================================
 # Resistances
@@ -67,7 +77,33 @@ def gravitational_resitance(W, theta):
 # Tractive Forces
 # =====================================================================
 
+def grousers_params(num_gr, r, l):
+    # num_gr = N in lecture notes
+    psi = 2 * np.pi / num_gr        # angle between grousers
+    l_g = psi * r                   # distance between grousers
+    N_g = l_g / l                   # number of grousrs in ground contact
+    return(N_g)
 
+def tractiveForce_NoGrousers(b,l,c_m,h, N_g):
+    return()
+
+def tractiveForce_Grousers(l, N_g):
+    phi = np.radians(35) # soil angle of internal friction (rad)
+    part1 = b * l * c_m * N_g * (1 + 2*h/b)
+    part2 = W * np.tan(phi) * (1 + (0.64*h/b) * np.arctan(b/h))
+    part3 = 1 - (K / (s*l) * (1 - np.exp( -s * l / K)))
+    H = (part1 + part2) * part3
+    # print("tractiveForce_Grousers ==>", H)
+    return(H)
+
+# =====================================================================
+# Drawbar Pull
+# =====================================================================
+
+def drawbarPull(H, R_c_total, R_r, R_g, R_b_total):
+    R_total = R_c_total + R_r + R_g +R_b_total
+    DP = H - R_total
+    return(DP)
 
 # =====================================================================
 # Helper Functions
@@ -103,8 +139,14 @@ def terzaghi(phi):
     N_g = 2 * (N_q+1) * np.tan(phi) / (1 + 0.4 * np.sin(4 * phi))
     return(N_q, N_c, N_g)
 
+# =====================================================================
 # Main Function
+# =====================================================================
+
 def main():
+    
+    # compute resistances
+    z, R_c = compression_resitance(k_c, k_phi, b, W_wh, D)      # compression resistance on one wheel
     
     # get rquired variables
     N_q, N_c, N_g = terzaghi(phi)
@@ -113,8 +155,6 @@ def main():
     l_o = length_of_soil_ruptured(z, phi)
     K_c, K_phi = modulus_soil_deformation(N_c, N_g, phi)
     
-    # compute resistances
-    z, R_c = compression_resitance(k_c, k_phi, b, W_wh, D)      # compression resistance on one wheel
     R_c_total = R_c * num                                       # total compression resistance on vehicle
     R_r = rolling_resitance(W, cf)
     R_g = gravitational_resitance(W, theta)
@@ -141,6 +181,24 @@ def main():
     print("Total Resistance, flat ground ==>", np.round(R_tot_flat,4), ' N')
     print("Total Resistance, 15 deg slope ==>", np.round(R_tot_slope,4), ' N')
     print("==================================================================")
+    
+    s_list = [1,2,3]
+    for s in s_list:
+        print(s)
+    
+    # grouser study
+    N_g = grousers_params(num_gr, r, l)
+    H = tractiveForce_Grousers(l, N_g)
+    print("Number of Grousrs in ground contact ==>", np.round(N_g,0))
+    print("Maximum Tractive Force of Wheels ==>", np.round(H, 4))
+    
+    print("==================================================================")
+    
+    # compute Draw Bar pull 
+    DP = drawbarPull(H, R_c_total, R_r, R_g, R_b_total)
+    print("Drawbar Pull (residual drive force) ==>", np.round(DP, 4))
+    print("==================================================================")
+
 
 if __name__ == "__main__":
     main()
