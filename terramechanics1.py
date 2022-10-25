@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 # =====================================================================
 # GLobal Variables
@@ -189,15 +191,22 @@ def main():
         N_g = grousers_params(num_gr, r, l)
         H = tractiveForce_Grousers(l, N_g, s)
         # print("Number of Grousrs in ground contact ==>", np.round(N_g,0))
-        print("Maximum Tractive Force of Wheels ==>", np.round(H, 4))
+        # print("Maximum Tractive Force of Wheels ==>", np.round(H, 4))
         # print("==================================================================")
         # compute Draw Bar pull 
         DP = drawbarPull(H, R_c_total, R_r, R_g, R_b_total)
         DP_list.append(DP)
-        print("Drawbar Pull (residual drive force) ==>", np.round(DP, 4))
+        # print("Drawbar Pull (residual drive force) ==>", np.round(DP, 4))
         # print("==================================================================")
 
-
+    # plotting the points 
+    plt.plot(s_list, DP_list)
+    plt.xlabel('Slip Ratio - S')
+    plt.ylabel('Wheel Drawbar Pull (N)')
+    # giving a title to my graph
+    plt.title('Drawbar Pull vs Slip Ratio')
+    # function to show the plot
+    plt.show()
 
 if __name__ == "__main__":
     main()
