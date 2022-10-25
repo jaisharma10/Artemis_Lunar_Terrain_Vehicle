@@ -183,10 +183,12 @@ def main():
     print("Total Resistance, 15 deg slope ==>", np.round(R_tot_slope,4), ' N')
     # print("==================================================================")
     
-    s_list = [0.2, 0.5, 1, 2, 3, 4, 5, 6, 7, 8]
-    DP_list = []
+    s_list = [0.01, 0.1, 0.2, 0.3, 0.4, 0.5, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+    DP_list = []  # drawbar pull
+    H_list = [] # wheel thrust
     for s in s_list:    
-        print("==========================================================================================")
+        print('--->', s)
+        # print("==========================================================================================")
         # grouser study
         N_g = grousers_params(num_gr, r, l)
         H = tractiveForce_Grousers(l, N_g, s)
@@ -195,18 +197,26 @@ def main():
         # print("==================================================================")
         # compute Draw Bar pull 
         DP = drawbarPull(H, R_c_total, R_r, R_g, R_b_total)
+        H_list.append(H/4)
         DP_list.append(DP)
         # print("Drawbar Pull (residual drive force) ==>", np.round(DP, 4))
         # print("==================================================================")
 
     # plotting the points 
-    plt.plot(s_list, DP_list)
+    
+    plt.scatter(s_list, H_list)
+    plt.title('Wheel Thrust vs Slip Ratio')
+    plt.xlabel('Slip Ratio - S')
+    plt.ylabel('Wheel Thrust (N)')
+    plt.show()
+    
+    plt.scatter(s_list, DP_list)
+    plt.title('Drawbar Pull vs Slip Ratio')
     plt.xlabel('Slip Ratio - S')
     plt.ylabel('Wheel Drawbar Pull (N)')
-    # giving a title to my graph
-    plt.title('Drawbar Pull vs Slip Ratio')
-    # function to show the plot
     plt.show()
+
+
 
 if __name__ == "__main__":
     main()
