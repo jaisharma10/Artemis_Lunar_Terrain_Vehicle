@@ -39,7 +39,6 @@ h = 0.05             # height of grouser (m)
 
 # more constants
 # s = 0.035      # wheel slip ratio 
-s = 0.5
 K = 0.018      # shear deformation modulus (m)
 
 
@@ -87,7 +86,7 @@ def grousers_params(num_gr, r, l):
 def tractiveForce_NoGrousers(b,l,c_m,h, N_g):
     return()
 
-def tractiveForce_Grousers(l, N_g):
+def tractiveForce_Grousers(l, N_g, s):
     phi = np.radians(35) # soil angle of internal friction (rad)
     part1 = b * l * c_m * N_g * (1 + 2*h/b)
     part2 = W * np.tan(phi) * (1 + (0.64*h/b) * np.arctan(b/h))
@@ -180,24 +179,24 @@ def main():
     R_tot_slope = R_c_total + R_r + R_b_total + R_g
     print("Total Resistance, flat ground ==>", np.round(R_tot_flat,4), ' N')
     print("Total Resistance, 15 deg slope ==>", np.round(R_tot_slope,4), ' N')
-    print("==================================================================")
+    # print("==================================================================")
     
-    s_list = [1,2,3]
-    for s in s_list:
-        print(s)
-    
-    # grouser study
-    N_g = grousers_params(num_gr, r, l)
-    H = tractiveForce_Grousers(l, N_g)
-    print("Number of Grousrs in ground contact ==>", np.round(N_g,0))
-    print("Maximum Tractive Force of Wheels ==>", np.round(H, 4))
-    
-    print("==================================================================")
-    
-    # compute Draw Bar pull 
-    DP = drawbarPull(H, R_c_total, R_r, R_g, R_b_total)
-    print("Drawbar Pull (residual drive force) ==>", np.round(DP, 4))
-    print("==================================================================")
+    s_list = [0.2, 0.5, 1, 2, 3, 4, 5, 6, 7, 8]
+    DP_list = []
+    for s in s_list:    
+        print("==========================================================================================")
+        # grouser study
+        N_g = grousers_params(num_gr, r, l)
+        H = tractiveForce_Grousers(l, N_g, s)
+        # print("Number of Grousrs in ground contact ==>", np.round(N_g,0))
+        print("Maximum Tractive Force of Wheels ==>", np.round(H, 4))
+        # print("==================================================================")
+        # compute Draw Bar pull 
+        DP = drawbarPull(H, R_c_total, R_r, R_g, R_b_total)
+        DP_list.append(DP)
+        print("Drawbar Pull (residual drive force) ==>", np.round(DP, 4))
+        # print("==================================================================")
+
 
 
 if __name__ == "__main__":
