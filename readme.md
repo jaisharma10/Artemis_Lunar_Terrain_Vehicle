@@ -15,7 +15,8 @@ Performance requirements can be found below:
 - Support 8 hours of EVA
 
 <p align="center">
-  <img src = "Figures/artemis_rover_pic.png" height = "200" >
+  <img src = "Figures/ArtemisProject.jpg" height = "200" >   <img src = "Figures/artemis_rover_pic.png" height = "200" >
+
 </p>
 
 
