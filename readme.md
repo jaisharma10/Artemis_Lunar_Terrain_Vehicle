@@ -40,7 +40,19 @@ The LTV will be an unenclosed, all-electric rover that two suited astronauts can
 </p>
 
 ## Final Rover Design Solution
-  
+
+The extensive details of the design can be found in the following [presentation](ENAE788x_TermProject_LTV.pdf). The presentation covers the analysis and trade studies performed in the realm of the following topics:
+
+- Terramechanics 
+- Wheel Design
+- Suspension
+- Stability
+- Motor Requirements
+- Sensors 
+- Path Planning Strategies
+- Power Requirements 
+
+
 | Normal Configuration  |  Cargo Configuration | Storage Configuration |
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src = "Figures/normal_config.png" height = "200" > |  <img src = "Figures/cargo_config.png" height = "200" > | <img src = "Figures/storage_config.png" height = "200" > 
